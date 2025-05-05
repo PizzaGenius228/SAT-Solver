@@ -1,0 +1,5 @@
+python sat_bechmark.py
+
+python sat_bechmark.py --test pigeonhole --min 2 --max 6
+
+python sat_bechmark.py --test 3sat --min 10 --max 20
