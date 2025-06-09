@@ -49,12 +49,16 @@ def dp(clauses, symbols):
 
 # ------------------ DPLL ------------------ #
 def dpll(clauses, assignment={}):
-    if all([any(lit in assignment and assignment[lit] for lit in clause) for clause in clauses]):
+    # Clause is satisfied if at least one literal evaluates True
+    if all(any(assignment.get(abs(lit), None) == (lit > 0) for lit in clause) for clause in clauses):
         return True
-
-    if any([all((lit in assignment and not assignment[lit]) for lit in clause) for clause in clauses]):
+    
+    # Clause is unsatisfied if all literals evaluate False
+    if any(all(assignment.get(abs(lit), None) == (lit < 0) for lit in clause if abs(lit) in assignment) and
+           all(abs(lit) in assignment for lit in clause)
+           for clause in clauses):
         return False
-
+               
     unassigned = {abs(lit) for clause in clauses for lit in clause} - assignment.keys()
     if not unassigned:
         return True
